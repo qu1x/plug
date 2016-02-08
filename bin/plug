@@ -1,0 +1,53 @@
+#! /bin/sh
+
+# This file is part of Plug, see <https://qu1x.org/plug>.
+# 
+# Copyright (c) 2016 Rouven Spreckels <n3vu0r@qu1x.org>
+# 
+# Plug is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License version 3
+# as published by the Free Software Foundation on 19 November 2007.
+# 
+# Plug is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+# 
+# You should have received a copy of the GNU Affero General Public License
+# along with Plug. If not, see <https://www.gnu.org/licenses>.
+
+if [ $# -eq 0 ]; then
+	echo "plug - Invoke command as soon as its device is plugged in."
+	echo 
+	echo "plug [<CMD> [ARG]... <DEV>]"
+	echo 
+	echo "  Wait for DEV to be plugged in before invoking <CMD> [ARG]... <DEV>."
+	echo "  Without arguments, print help information."
+	echo 
+	echo "plug picocom -b 115200 -- /dev/ttyUSB0"
+	echo 
+	echo "  Wait for USB-to-Serial adapter to be populated before invoking"
+	echo "  dumb-terminal emulator with given baud rate to for example not miss"
+	echo "  early debug messages of a booting device having just appeared."
+	echo 
+	echo "Version: plug-1.0.0 <https://qu1x.org/plug>"
+	echo "License: GNU Affero General Public License version 3"
+	echo "Authors: (c) 2016 Rouven Spreckels <n3vu0r@qu1x.org>"
+	exit
+fi
+
+if [ $# -eq 1 ]; then
+	>&2 echo "CMD given without DEV."
+	exit 113
+fi
+
+for dev; do :; done
+
+echo "Waiting for $dev to be plugged in..."
+while [ ! -e "$dev" ] || [ $(stat -c %g -- "$dev") -eq 0 ]; do
+	inotifywait -qt 1 -e create -e attrib -- "$(dirname -- "$dev")"
+done
+echo "Done."
+echo
+
+$@

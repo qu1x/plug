@@ -1,0 +1,71 @@
+.\" This file is part of Plug, see <https://qu1x.org/plug>.
+.\" 
+.\" Copyright (c) 2016 Rouven Spreckels <n3vu0r@qu1x.org>
+.\" 
+.\" Plug is free software: you can redistribute it and/or modify
+.\" it under the terms of the GNU Affero General Public License version 3
+.\" as published by the Free Software Foundation on 19 November 2007.
+.\" 
+.\" Plug is distributed in the hope that it will be useful,
+.\" but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+.\" GNU Affero General Public License for more details.
+.\" 
+.\" You should have received a copy of the GNU Affero General Public License
+.\" along with Plug. If not, see <https://www.gnu.org/licenses>.
+.\"
+.TH plug 1 "February 8, 2016" "plug\-1.0.0" "Plug"
+
+.SH NAME
+plug \- Invoke command as soon as its device is plugged in.
+
+.SH SYNOPSIS
+\fBplug\fR [\fICMD\fR [\fIARG\fR]... \fIDEV\fR]
+
+.SH DESCRIPTION
+Wait for \fIDEV\fR to be plugged in before
+invoking \fICMD\fR [\fIARG\fR]... \fIDEV\fR.
+Without arguments, print help information.
+
+.SH EXAMPLE
+\fBplug\fR picocom \-b 115200 \-\- /dev/ttyUSB0
+.PP
+Wait for USB\-to\-Serial adapter to be populated before invoking
+dumb\-terminal emulator with given baud rate to for example not miss
+early debug messages of a booting device having just appeared.
+
+.SH EXIT STATUS
+Either the exit status of the invoked command is passed through
+or \fBplug\fR exited by itself with one of the following ones.
+To decrease interference with the exit status of the invoked command,
+\fBplug\fR reversely uses the user\-defined range of 64 \- 113.
+.TP
+.B 0
+Help information requested.
+.TP
+.B \113
+\fICMD\fR given without \fIDEV\fR.
+
+.SH VERSION
+plug\-1.0.0 <https://qu1x.org/plug>
+
+.SH LICENSE
+Copyright \[co] 2016 Rouven Spreckels <n3vu0r@qu1x.org>
+.PP
+Plug is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License version 3
+as published by the Free Software Foundation on 19 November 2007.
+.PP
+Plug is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+.PP
+You should have received a copy of the GNU Affero General Public License
+along with Plug. If not, see <https://www.gnu.org/licenses>.
+
+.SH AUTHORS
+Copyright \[co] 2016 Rouven Spreckels <n3vu0r@qu1x.org>
+
+.SH SEE ALSO
+.B picocom(8)
